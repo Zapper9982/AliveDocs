@@ -3,6 +3,8 @@ import {nanoid} from 'nanoid';
 import { liveblocks } from '../liveblocks';
 import { revalidatePath } from 'next/cache';
 import { parseStringify } from '../utils';
+
+
 export const createDocument = async ({userId , email}:CreateDocumentParams)=>{
 
     const roomId = nanoid();
@@ -79,3 +81,22 @@ export const updateDocument   = async (roomId:string , title:string)=>{
         
     }
 }
+
+
+export const getDocuments = async (email:string) => {
+    try {
+        const rooms = await liveblocks.getRooms({userId: email});
+      
+        // const hasAccess = Object.keys(room.usersAccesses).includes(userId);
+      
+        // if(!hasAccess) {
+        //   throw new Error('You do not have access to this document');
+        // }
+      
+        return parseStringify(rooms);
+    } catch (error) {
+      console.log(`Error happened while getting a room: ${error}`);
+    }
+  }
+
+
